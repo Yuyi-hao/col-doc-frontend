@@ -1,90 +1,64 @@
 import NavBar from "../../components/navbar";
+import api from "../../api";
+import { useEffect, useState } from "react";
 
 function DocListing(){
+    const [ownDocs, setOwnDocs] = useState("");
+    const [sharedDocs, setSharedDocs] = useState("");
+    const getUserDocs = async () => {
+        try{
+            const response = await api.get("documents/me/documents");
+            if(response.status === 200){
+                setOwnDocs(response.data.content.document_owned);
+                setSharedDocs(response.data.content.document_shared);
+            }
+        }
+        catch(error){
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        getUserDocs();
+    }, []);
     return (
-        <div>
+        <>
             <NavBar/>
             <div className="container">
                 <h1>Your Documents</h1>
-                <div className="d-flex flex-wrap flex-row justify-content-between align-items-middle">
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    <div className="card" style={{width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-                <h1>Shared Documents</h1>
-                <div classNameName="d-flex flex-wrap flex-row">
-                    <div className="card" style={{ width: "18rem"}}>
-                        <img className="card-img-top" src="https://marketplace.canva.com/EAGGl4oRy2w/1/0/1131w/canva-brown-and-beige-vintage-creative-portfolio-cover-a4-document-2x5bwMPc560.jpg" alt="Card image cap"/>
-                        <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
+                <table className="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">updated at</th>
+                        <th scope="col">Created at</th>
+                        <th scope="col">Share count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                        </tr>
+                    </tbody>
+
+                </table>
             </div>
-        </div>
+        </>
     )
 }
 
