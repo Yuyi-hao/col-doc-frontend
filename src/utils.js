@@ -17,6 +17,6 @@ export function naturalTime(dateString) {
             return `${date.toISOString().slice(0, 16).replace("T", " ")} | ${count} ${interval.label}${count > 1 ? "s" : ""} ago`;
         }
     }
-
+    console.log(dateString);
     return `${date.toISOString().slice(0, 16).replace("T", " ")} | Just now`;
 }

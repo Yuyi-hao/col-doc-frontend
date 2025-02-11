@@ -2,6 +2,7 @@ import NavBar from "../../components/navbar";
 import api from "../../api";
 import {naturalTime} from "../../utils"
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function DocListing(){
     const [ownDocs, setOwnDocs] = useState("");
@@ -41,7 +42,7 @@ function DocListing(){
                             ownDocs.map((document, index) => (
                                 <tr key={document.id || index}>
                                     <th scope="row">{index}</th>
-                                    <td>{document.title}</td>
+                                    <td><Link to="{`/public-docs/${document.slug}`}">{document.title}</Link></td>
                                     <td>{document.id}</td>        
                                     <td>{naturalTime(document.created_at)}</td>        
                                     <td>{naturalTime(document.modified_at)}</td>
