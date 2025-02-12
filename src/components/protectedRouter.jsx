@@ -1,44 +1,44 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../api"
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "../constants";
+import {getLoggedInUser} from "../utils"
+
+export const AuthContext = createContext();
 
 function ProtectedRoute({children}){
-    const [isAuthorized, setIsAuthorized] = useState(null);
+    const [isAuthorized, setIsAuthorized] = useState(true);
+    const [userData, setDataUser] = useState(null);
+
     useEffect(() => {
-        auth().catch(() => setIsAuthorized(false));
-    }, []);
-    const refreshToken = async () =>{
-        const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-        try{
-            const response = await api.post("/accounts/token/refresh/", {refresh_token:refreshToken});
-            if(response.status === 200){
-                localStorage.setItem(ACCESS_TOKEN, response.data.content.access_token);
-                setIsAuthorized(true);
+        const fetchUser = async () => {try{
+            const fetchedUser = await getLoggedInUser();
+            if(!fetchedUser){
+                setIsAuthorized(false);
+                setDataUser(null);
             }
+            setIsAuthorized(true);
+            setDataUser(fetchedUser);
         }
         catch(error){
-            console.error(error);
-            setIsAuthorized(false);
-        }
-    }
-    const auth = async () => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if(!token){
-            setIsAuthorized(false);
-            return;
-        }
-        const decode = jwtDecode(token);
-        const tokenExpiration = decode.exp;
-        const now = Date.now()/1000;
-        if(tokenExpiration < now) await refreshToken();
-        else setIsAuthorized(true);
-    }
-    if(isAuthorized === null){
+            console.error(error)
+        }}
+        fetchUser();
+    }, []);
+    
+    if(isAuthorized === false){
         return <div>Loading.....</div>
     }
-    return isAuthorized? children: <Navigate to="/accounts/login"/>
+    return (
+        isAuthorized?
+        <AuthContext.Provider value={{isAuthorized, userData}}>
+            {children}
+        </AuthContext.Provider>:
+        <>
+            <Navigate to="/accounts/login"/>
+        </>
+    )
 }
 
 export default ProtectedRoute;

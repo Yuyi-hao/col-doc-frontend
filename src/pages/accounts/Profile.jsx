@@ -1,26 +1,33 @@
 import NavBar from "../../components/navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import api from "../../api";
-import { naturalTime } from "../../utils";
+import {naturalTime} from "../../utils";
+import { AuthContext } from "../../components/protectedRouter";
 function ProfileView(){
-    const [user, setUser] = useState("");
-    const getProfile = async () => {
-        try{
-            const response = await api.get("accounts/me");
-            if(response.status === 200){
-                setUser(response.data.content.user);
-            }
-        }
-        catch(error){
-            console.error(error);
-        }
-    }
-    useEffect(() => {
-        getProfile();
-    }, []);
+    const {isAuthorized, userData} = useContext(AuthContext);
+    // const [user, setUser] = useState("");
+    // const getProfile = async () => {
+        //     try{
+            //         const response = await api.get("accounts/me");
+            //         if(response.status === 200){
+                //             setUser(response.data.content.user);
+                //         }
+                //     }
+                //     catch(error){
+                    //         console.error(error);
+                    //     }
+                    // }
+    
+    // useEffect(() => {
+    //     const user = userData.user;
+    //     getProfile();
+    // }, []);
+    return <>
+    {console.log(userData)}
+    </>
     return(
         <>
-            <NavBar/>
+            <NavBar fetchedUser={false}/>
             <h1 className="text-center mb-100">Profile</h1>
             <div className="container d-flex flex-row flex-wrap justify-content-around">
                 <div>
@@ -55,15 +62,15 @@ function ProfileView(){
                         </tr> 
                         <tr>
                             <th scope="row">Last_Login</th>
-                            <td>{naturalTime(user.last_login)}</td>
+                            <td>{user.last_login}</td>
                         </tr> 
                         <tr>
                             <th scope="row">Created_At</th>
-                            <td>{naturalTime(user.created_at)}</td>
+                            <td>{user.created_at}</td>
                         </tr> 
                         <tr>
                             <th scope="row">Modified_At</th>
-                            <td>{naturalTime(user.modified_at)}</td>
+                            <td>{user.modified_at}</td>
                         </tr> 
                     </tbody>
                 </table>

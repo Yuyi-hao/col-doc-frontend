@@ -1,7 +1,7 @@
 import { NavLink, resolvePath } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api";
-function NavBar() {
+function NavBar({fetchedUser}) {
     const [user, setUser] = useState("");
     const getProfile = async () => {
         try{
@@ -30,15 +30,22 @@ function NavBar() {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                 </ul>
-                <div className="dropdown navbar-nav">
-                    <img src={user.profile_pic} className="rounded-circle" alt="Profile Image" id="dropdownMenuButton" width="35px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
-                    <div className="dropdown-menu dropdown-menu-right">
-                        <a className="dropdown-item" href="/accounts/me">Profile</a>
-                        <a className="dropdown-item" href="/accounts/logout">Logout</a>
+                {fetchedUser?<>
+                    <div className="dropdown navbar-nav">
+                        <img src={user.profile_pic} className="rounded-circle" alt="Profile Image" id="dropdownMenuButton" width="35px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
+                        <div className="dropdown-menu dropdown-menu-right">
+                            <a className="dropdown-item" href="/accounts/me">Profile</a>
+                            <a className="dropdown-item" href="/accounts/logout">Logout</a>
+                        </div>
                     </div>
-                </div>
-
-
+                </>:
+                <>
+                    <div className="">
+                        <a type="button" href="#" className="btn btn-success">Login</a>
+                        <a type="button" href="#" className="btn btn-dark">Sign Up</a>
+                    </div>
+                </>
+                }
             </div>
         </nav>
   )
