@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, LOGGED_IN_USER, REFRESH_TOKEN } from "../constants";
-import api from "../api"
+import api from "../api/api"
 
 function UserAuthForm({ route, method }) {
     const formName = method === 'login' ? "Login" : "Signup";
