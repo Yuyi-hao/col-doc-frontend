@@ -1,23 +1,26 @@
-import { NavLink, resolvePath } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../api";
+import api from "../api/api";
+import { getLoggedInUser } from "../utils";
 function NavBar({fetchedUser}) {
-    const [user, setUser] = useState("");
-    const getProfile = async () => {
-        try{
-            const response = await api.get("accounts/me");
-            if(response.status === 200){
-                setUser(response.data.content.user);
+    const [isAuthorized, setIsAuthorized] = useState(true);
+    const [userData, setDataUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {try{
+            const fetchedUser = await getLoggedInUser();
+            if(!fetchedUser){
+                setIsAuthorized(false);
+                setDataUser(null);
             }
+            setIsAuthorized(true);
+            setDataUser(fetchedUser);
         }
         catch(error){
-            console.error(error);
-        }
-    }
-    useEffect(() => {
-        getProfile();
+            console.error(error)
+        }}
+        fetchUser();
     }, []);
-
+    
     return(
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a className="navbar-brand" href="/home">
@@ -30,9 +33,9 @@ function NavBar({fetchedUser}) {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                 </ul>
-                {fetchedUser?<>
+                {isAuthorized?<>
                     <div className="dropdown navbar-nav">
-                        <img src={user.profile_pic} className="rounded-circle" alt="Profile Image" id="dropdownMenuButton" width="35px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
+                        <img src={userData.profile_pic} className="rounded-circle" alt="Profile Image" id="dropdownMenuButton" width="35px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
                         <div className="dropdown-menu dropdown-menu-right">
                             <a className="dropdown-item" href="/accounts/me">Profile</a>
                             <a className="dropdown-item" href="/accounts/logout">Logout</a>
@@ -41,8 +44,8 @@ function NavBar({fetchedUser}) {
                 </>:
                 <>
                     <div className="">
-                        <a type="button" href="#" className="btn btn-success">Login</a>
-                        <a type="button" href="#" className="btn btn-dark">Sign Up</a>
+                        <a type="button" href="accounts/login" className="btn btn-success">Login</a>
+                        <a type="button" href="accounts/signup" className="btn btn-dark">Sign Up</a>
                     </div>
                 </>
                 }

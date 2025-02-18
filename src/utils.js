@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
-import api from "./api";
+import api from "./api/api";
 
 export function naturalTime(dateString) {
     const date = new Date(dateString);

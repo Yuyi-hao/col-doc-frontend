@@ -1,5 +1,5 @@
 import NavBar from "../../components/navbar";
-import api from "../../api";
+import api from "../../api/api";
 import {naturalTime} from "../../utils"
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
