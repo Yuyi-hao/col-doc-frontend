@@ -1,6 +1,6 @@
 import NavBar from "../../components/navbar";
 import { useState, useEffect, useContext } from "react";
-import api from "../../api";
+import api from "../../api/api";
 import {naturalTime} from "../../utils";
 import { AuthContext } from "../../components/protectedRouter";
 function ProfileView(){
